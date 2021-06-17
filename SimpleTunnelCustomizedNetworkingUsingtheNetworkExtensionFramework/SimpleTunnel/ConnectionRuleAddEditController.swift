@@ -17,7 +17,8 @@ extension NEEvaluateConnectionRuleAction: CustomStringConvertible {
 		switch self {
 			case .connectIfNeeded: return "Connect If Needed"
 			case .neverConnect: return "Never Connect"
-		}
+        @unknown default: return "Never Connect"
+        }
 	}
 }
 
@@ -55,7 +56,7 @@ class ConnectionRuleAddEditController: ConfigurationParametersViewController {
 			domainsCell,
 			requiredDNSCell,
 			requiredURLProbeCell
-		].flatMap { $0 }
+        ].compactMap { $0 }
 
 		requiredURLProbeCell.valueChanged = {
 			if let enteredText = self.requiredURLProbeCell.textField.text {
@@ -101,9 +102,9 @@ class ConnectionRuleAddEditController: ConfigurationParametersViewController {
 
 				let enumValues: [NEEvaluateConnectionRuleAction] = [ .connectIfNeeded, .neverConnect, ],
 					stringValues = enumValues.flatMap { $0.description },
-					currentSelection = enumValues.index { $0 == targetRule.action }
+                    currentSelection = enumValues.firstIndex { $0 == targetRule.action }
 
-				enumController.setValues(stringValues, title: "Action", currentSelection: currentSelection) { newRow in
+				enumController.setValues(stringValues.map(String.init), title: "Action", currentSelection: currentSelection) { newRow in
 					let newAction = enumValues[newRow]
 					guard self.targetRule.action != newAction else { return }
 

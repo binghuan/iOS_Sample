@@ -10,7 +10,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>com.apple.managed.vpn.shared</string>
+		<string>$(AppIdentifierPrefix)com.bh.apple-samplecode.SimpleTunnel.FilterDataProvider</string>
 	</array>
 </dict>
 </plist>

@@ -8,13 +8,9 @@
 		<string>app-proxy-provider</string>
 		<string>content-filter-provider</string>
 	</array>
-	<key>com.apple.developer.networking.vpn.api</key>
-	<array>
-		<string>allow-vpn</string>
-	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>com.apple.managed.vpn.shared</string>
+		<string>$(AppIdentifierPrefix)com.bh.apple-samplecode.SimpleTunnel</string>
 	</array>
 </dict>
 </plist>
