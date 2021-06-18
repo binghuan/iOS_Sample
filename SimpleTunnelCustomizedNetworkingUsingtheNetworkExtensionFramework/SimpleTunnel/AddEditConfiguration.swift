@@ -224,7 +224,7 @@ class AddEditConfiguration: ConfigurationParametersViewController {
 			let attributes: [NSObject: AnyObject] = [
 				kSecAttrService : UUID().uuidString as AnyObject,
 				kSecValueData : passwordData as AnyObject,
-				kSecAttrAccessible : kSecAttrAccessibleAlways,
+				kSecAttrAccessible : kSecAttrAccessibleAfterFirstUnlock,
 				kSecClass : kSecClassGenericPassword,
 				kSecReturnPersistentRef : kCFBooleanTrue
 			]
