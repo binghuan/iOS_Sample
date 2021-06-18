@@ -51,4 +51,4 @@ The SimpleTunnel OS X targets require the OS X 11.0 SDK or newer.
 
 Copyright (C) 2016 Apple Inc. All rights reserved.
 
-source: https://developer.apple.com/documentation/networkextension/nepackettunnelprovider
+source: https://developer.apple.com/library/archive/samplecode/SimpleTunnel/Introduction/Intro.html#//apple_ref/doc/uid/TP40016140
