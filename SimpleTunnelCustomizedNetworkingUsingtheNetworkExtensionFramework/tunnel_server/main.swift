@@ -1,23 +1,25 @@
 /*
-	Copyright (C) 2016 Apple Inc. All Rights Reserved.
-	See LICENSE.txt for this sample’s licensing information
-	
-	Abstract:
-	This file contains the main code for the SimpleTunnel server.
-*/
+ Copyright (C) 2016 Apple Inc. All Rights Reserved.
+ See LICENSE.txt for this sample’s licensing information
+ 
+ Abstract:
+ This file contains the main code for the SimpleTunnel server.
+ */
 
 import Foundation
 
 /// Dispatch source to catch and handle SIGINT
-let interruptSignalSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, UInt(SIGINT), 0, dispatch_get_main_queue())
+//let interruptSignalSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, UInt(SIGINT), 0, dispatch_get_main_queue())
+let interruptSignalSource = DispatchSource.makeSignalSource(signal: SIGINT, queue: .main)
 
 /// Dispatch source to catch and handle SIGTERM
-let termSignalSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, UInt(SIGTERM), 0, dispatch_get_main_queue())
+//let termSignalSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, UInt(SIGTERM), 0, dispatch_get_main_queue())
+let termSignalSource = DispatchSource.makeSignalSource(signal: SIGTERM, queue: .main)
 
 /// Basic sanity check of the parameters.
-if Process.arguments.count < 3 {
-	print("Usage: \(Process.arguments[0]) <port> <config-file>")
-	exit(1)
+guard CommandLine.argc == 3 else {
+    print("Usage: \(CommandLine.arguments[0]) <port> <config-file>")
+    exit(1)
 }
 
 func ignore(_: Int32)  {
@@ -25,36 +27,36 @@ func ignore(_: Int32)  {
 signal(SIGTERM, ignore)
 signal(SIGINT, ignore)
 
-let portString = Process.arguments[1]
-let configurationPath = Process.arguments[2]
-let networkService: NSNetService
+//let portString = Process().arguments![1]
+//let configurationPath = Process().arguments![2]
+let portString = CommandLine.arguments[1]
+let configurationPath = CommandLine.arguments[2]
+let networkService: NetService
 
 // Initialize the server.
-
-if !ServerTunnel.initializeWithConfigurationFile(configurationPath) {
-	exit(1)
+if !ServerTunnel.initializeWithConfigurationFile(path: configurationPath) {
+    exit(1)
 }
 
 if let portNumber = Int(portString)  {
-	networkService = ServerTunnel.startListeningOnPort(Int32(portNumber))
+    networkService = ServerTunnel.startListeningOnPort(port: Int32(portNumber))
 }
 else {
-	print("Invalid port: \(portString)")
-	exit(1)
+    print("Invalid port: \(portString)")
+    exit(1)
 }
 
 // Set up signal handling.
-
-dispatch_source_set_event_handler(interruptSignalSource) {
-	networkService.stop()
-	return
+(interruptSignalSource as! DispatchSource).setEventHandler() {
+    networkService.stop()
+    return
 }
-dispatch_resume(interruptSignalSource)
+(interruptSignalSource as! DispatchObject).resume()
 
-dispatch_source_set_event_handler(termSignalSource) {
-	networkService.stop()
-	return
+(termSignalSource as! DispatchSource).setEventHandler() {
+    networkService.stop()
+    return
 }
-dispatch_resume(termSignalSource)
+(termSignalSource as! DispatchObject).resume()
 
-NSRunLoop.mainRunLoop().run()
+RunLoop.main.run()
