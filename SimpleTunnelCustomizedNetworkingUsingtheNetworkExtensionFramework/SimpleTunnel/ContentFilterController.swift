@@ -98,11 +98,16 @@ class ContentFilterController: UITableViewController {
 
 	/// Handle changes to the rules
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		if context == &rulesContext && keyPath == "rules" {
-			reloadRules()
-		} else {
-			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-		}
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            if context == &self.rulesContext && keyPath == "rules" {
+                self.reloadRules()
+            } else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            }
+        }
+        
+		
 	}
 
 	// MARK: UITableViewDataSource
