@@ -7,7 +7,7 @@
 		<key>Routes</key>
 		<dict>
 			<key>Address</key>
-			<string>192.168.0.18:10808</string>
+			<string>192.168.0.18</string>
 			<key>Netmask</key>
 			<string>255.255.255.0</string>
 		</dict>

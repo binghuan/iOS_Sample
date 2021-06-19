@@ -4,13 +4,13 @@
 <dict>
 	<key>com.apple.developer.networking.networkextension</key>
 	<array>
-		<string>packet-tunnel-provider</string>
 		<string>app-proxy-provider</string>
 		<string>content-filter-provider</string>
+		<string>packet-tunnel-provider</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.bh.apple-samplecode.SimpleTunnel</string>
+		<string>$(AppIdentifierPrefix)com.apple.managed.vpn.shared</string>
 	</array>
 </dict>
 </plist>
