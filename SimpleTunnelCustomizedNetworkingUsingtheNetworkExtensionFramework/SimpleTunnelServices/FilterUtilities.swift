@@ -42,7 +42,7 @@ open class FilterUtilities {
 	// MARK: Properties
 
 	/// A reference to the SimpleTunnel user defaults.
-    public static let defaults = UserDefaults(suiteName: "group.com.example.apple-samplecode.SimpleTunnel")
+    public static let defaults = UserDefaults(suiteName: "group.com.bh.apple-samplecode.SimpleTunnel")
 
 	// MARK: Initializers
 
