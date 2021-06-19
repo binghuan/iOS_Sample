@@ -17,6 +17,8 @@
 		8261E6E7267BBBBF00F92E07 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
 		82AB7D89267BB7C900901A1C /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
 		82AB7D8A267BB81100901A1C /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
+		82EF3557267E3F6600B14CD6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
+		82EF3558267E3F7100B14CD6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
 		B01A16991A8A616000BC9EFD /* SimpleTunnelServices.h in Headers */ = {isa = PBXBuildFile; fileRef = B01A16981A8A616000BC9EFD /* SimpleTunnelServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B01A16AC1A8A616000BC9EFD /* SimpleTunnelServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B01A16941A8A615F00BC9EFD /* SimpleTunnelServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B07CCB3D1A8940E600A4F1E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07CCB3C1A8940E600A4F1E5 /* AppDelegate.swift */; };
@@ -238,6 +240,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82EF3558267E3F7100B14CD6 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +279,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82EF3557267E3F6600B14CD6 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
