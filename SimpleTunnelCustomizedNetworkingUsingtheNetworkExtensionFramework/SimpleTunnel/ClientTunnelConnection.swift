@@ -9,6 +9,7 @@
 import Foundation
 import SimpleTunnelServices
 import NetworkExtension
+import os
 
 // MARK: Protocols
 
@@ -34,6 +35,7 @@ class ClientTunnelConnection: Connection {
 	// MARK: Initializers
 
 	init(tunnel: ClientTunnel, clientPacketFlow: NEPacketTunnelFlow, connectionDelegate: ClientTunnelConnectionDelegate) {
+        os_log("BH_Lin: ClientTunnelConnection - init")
 		delegate = connectionDelegate
 		packetFlow = clientPacketFlow
 		let newConnectionIdentifier = arc4random()
@@ -44,6 +46,8 @@ class ClientTunnelConnection: Connection {
 
 	/// Open the connection by sending a "connection open" message to the tunnel server.
 	func open() {
+        os_log("BH_Lin: ClientTunnelConnection - open")
+        
 		guard let clientTunnel = tunnel as? ClientTunnel else { return }
 
 		let properties = createMessagePropertiesForConnection(identifier, commandType: .open, extraProperties:[
@@ -59,6 +63,8 @@ class ClientTunnelConnection: Connection {
 
 	/// Handle packets coming from the packet flow.
 	func handlePackets(_ packets: [Data], protocols: [NSNumber]) {
+        os_log("BH_Lin: ClientTunnelConnection - handlePackets")
+        
 		guard let clientTunnel = tunnel as? ClientTunnel else { return }
 
 		let properties = createMessagePropertiesForConnection(identifier, commandType: .packets, extraProperties:[
@@ -81,6 +87,8 @@ class ClientTunnelConnection: Connection {
 
 	/// Make the initial readPacketsWithCompletionHandler call.
 	func startHandlingPackets() {
+        os_log("BH_Lin: ClientTunnelConnection - startHandlingPackets")
+        
 		packetFlow.readPackets { inPackets, inProtocols in
 			self.handlePackets(inPackets, protocols: inProtocols)
 		}
@@ -90,6 +98,8 @@ class ClientTunnelConnection: Connection {
 
 	/// Handle the event of the connection being established.
 	override func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [NSObject: AnyObject]) {
+        os_log("BH_Lin: ClientTunnelConnection - handleOpenCompleted")
+        
 		guard resultCode == .success else {
 			delegate.tunnelConnectionDidClose(self, error: SimpleTunnelError.badConnection as NSError)
 			return
@@ -106,6 +116,8 @@ class ClientTunnelConnection: Connection {
 
 	/// Send packets to the virtual interface to be injected into the IP stack.
 	override func sendPackets(_ packets: [Data], protocols: [NSNumber]) {
+        os_log("BH_Lin: ClientTunnelConnection - sendPackets")
+        
 		packetFlow.writePackets(packets, withProtocols: protocols)
 	}
 }

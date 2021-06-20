@@ -8,6 +8,7 @@
 
 import NetworkExtension
 import SimpleTunnelServices
+import os
 
 /// A NEAppProxyProvider sub-class that implements the client side of the SimpleTunnel tunneling protocol.
 class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
@@ -28,6 +29,8 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 	/// Begin the process of establishing the tunnel.
 	override func startProxy(options: [String : Any]?, completionHandler: @escaping (Error?) -> Void) {
 
+        os_log("BH_Lin: >> startProxy")
+        
 		let newTunnel = ClientTunnel()
 		newTunnel.delegate = self
 
@@ -43,6 +46,8 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 	/// Begin the process of stopping the tunnel.
 	override func stopProxy(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
 
+        os_log("BH_Lin: >> stopProxy")
+        
 		// Clear out any pending start completion handler.
 		pendingStartCompletion = nil
 
@@ -52,6 +57,9 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 
 	/// Handle a new flow of network data created by an application.
 	override func handleNewFlow(_ flow: (NEAppProxyFlow?)) -> Bool {
+        
+        os_log("BH_Lin: >> handleNewFlow")
+        
 		var newConnection: ClientAppProxyConnection?
 
 		guard let clientTunnel = tunnel else { return false }
@@ -74,6 +82,9 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 
 	/// Handle the event of the tunnel being fully established.
 	func tunnelDidOpen(_ targetTunnel: Tunnel) {
+        
+        os_log("BH_Lin: >> tunnelDidOpen")
+        
 		guard let clientTunnel = targetTunnel as? ClientTunnel else {
 			pendingStartCompletion?(SimpleTunnelError.internalError as NSError)
 			pendingStartCompletion = nil
@@ -86,6 +97,8 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 	/// Handle the event of the tunnel being fully disconnected.
 	func tunnelDidClose(_ targetTunnel: Tunnel) {
 
+        os_log(">> tunnelDidClose")
+        
 		// Call the appropriate completion handler depending on the current pending tunnel operation.
 		if pendingStartCompletion != nil {
 			pendingStartCompletion?(tunnel?.lastError)
@@ -104,6 +117,7 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 
 	/// Handle the server sending a configuration.
 	func tunnelDidSendConfiguration(_ targetTunnel: Tunnel, configuration: [String : AnyObject]) {
+        os_log("BH_Lin: >> tunnelDidSendConfiguration")
 		simpleTunnelLog("Server sent configuration: \(configuration)")
 
 		guard let tunnelAddress = tunnel?.remoteHost else {

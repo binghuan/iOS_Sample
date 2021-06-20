@@ -35,17 +35,18 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         os_log("BH_Lin: +++ startTunnel +++")
         
-        
         let newTunnel = ClientTunnel()
         newTunnel.delegate = self
         
         if let error = newTunnel.startTunnel(self) {
+            os_log("BH_Lin: newTunnel.startTunnel error")
             completionHandler(error as NSError)
         }
         else {
             // Save the completion handler for when the tunnel is fully established.
             pendingStartCompletion = completionHandler
             tunnel = newTunnel
+            os_log("BH_Lin: Save the completion handler for when the tunnel is fully established.")
         }
         os_log("BH_Lin: --- startTunnel ---")
     }
@@ -56,9 +57,11 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         // Clear out any pending start completion handler.
         pendingStartCompletion = nil
+        os_log("BH_Lin: Clear out any pending start completion handler.")
         
         // Save the completion handler for when the tunnel is fully disconnected.
         pendingStopCompletion = completionHandler
+        os_log("BH_Lin: Save the completion handler for when the tunnel is fully disconnected.")
         tunnel?.closeTunnel()
         os_log("BH_Lin: --- stopTunnel ---")
     }
@@ -72,7 +75,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
             return
         }
         
-        os_log("BH_Lin: Got a message from the app: \(messageString)")
         simpleTunnelLog("Got a message from the app: \(messageString)")
         
         let responseData = "Hello app".data(using: String.Encoding.utf8)
@@ -88,6 +90,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         // Open the logical flow of packets through the tunnel.
         let newConnection = ClientTunnelConnection(tunnel: tunnel!, clientPacketFlow: packetFlow, connectionDelegate: self)
+        os_log("BH_Lin: Open the logical flow of packets through the tunnel.")
         newConnection.open()
         tunnelConnection = newConnection
         os_log("BH_Lin: --- tunnelDidOpen ---")
@@ -100,16 +103,19 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         if pendingStartCompletion != nil {
             // Closed while starting, call the start completion handler with the appropriate error.
             pendingStartCompletion?(tunnel?.lastError)
+            os_log("BH_Lin: Closed while starting, call the start completion handler with the appropriate error.")
             pendingStartCompletion = nil
         }
         else if pendingStopCompletion != nil {
             // Closed as the result of a call to stopTunnelWithReason, call the stop completion handler.
             pendingStopCompletion?()
+            os_log("BH_Lin: Closed as the result of a call to stopTunnelWithReason, call the stop completion handler.")
             pendingStopCompletion = nil
         }
         else {
             // Closed as the result of an error on the tunnel connection, cancel the tunnel.
             cancelTunnelWithError(tunnel?.lastError)
+            os_log("BH_Lin: Closed as the result of an error on the tunnel connection, cancel the tunnel.")
         }
         tunnel = nil
         os_log("BH_Lin: --- tunnelDidClose ---")
@@ -127,6 +133,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         os_log("BH_Lin: +++ tunnelConnectionDidOpen +++")
         
         // Create the virtual interface settings.
+        os_log("BH_Lin: Create the virtual interface settings.")
         guard let settings = createTunnelSettingsFromConfiguration(configuration) else {
             pendingStartCompletion?(SimpleTunnelError.internalError as NSError)
             pendingStartCompletion = nil
@@ -134,6 +141,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         }
         
         // Set the virtual interface settings.
+        os_log("BH_Lin: Set the virtual interface settings.")
         setTunnelNetworkSettings(settings) { error in
             os_log("BH_Lin: +++ setTunnelNetworkSettings +++")
             
@@ -144,11 +152,13 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
             }
             else {
                 // Now we can start reading and writing packets to/from the virtual interface.
+                os_log("BH_Lin: Now we can start reading and writing packets to/from the virtual interface.")
                 self.tunnelConnection?.startHandlingPackets()
             }
             
             // Now the tunnel is fully established, call the start completion handler.
             self.pendingStartCompletion?(startError)
+            os_log("BH_Lin: Now the tunnel is fully established, call the start completion handler.")
             self.pendingStartCompletion = nil
         }
     }
@@ -190,6 +200,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         }
         else {
             // No routes specified, use the default route.
+            os_log("BH_Lin: No routes specified, use the default route.")
             newSettings.ipv4Settings?.includedRoutes = [NEIPv4Route.default()]
         }
         

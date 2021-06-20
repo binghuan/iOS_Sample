@@ -9,6 +9,7 @@
 import UIKit
 import NetworkExtension
 import SimpleTunnelServices
+import os
 
 /// The view controller object for the list of packet tunnel configurations.
 class ConfigurationListController: ListViewController {
@@ -47,6 +48,8 @@ class ConfigurationListController: ListViewController {
 
 	/// Re-load all of the packet tunnel configurations from the Network Extension preferences
 	func reloadManagers() {
+        os_log("BH_Lin: reloadManagers")
+        
 		NETunnelProviderManager.loadAllFromPreferences() { newManagers, error in
 			guard let vpnManagers = newManagers else { return }
 
@@ -65,6 +68,7 @@ class ConfigurationListController: ListViewController {
 
 	/// Register for configuration change notifications.
 	func observeStatus() {
+        os_log("BH_Lin: observeStatus")
 		for (index, manager) in managers.enumerated() {
 			NotificationCenter.default.addObserver(forName: NSNotification.Name.NEVPNStatusDidChange, object: manager.connection, queue: OperationQueue.main, using: { notification in
 				self.tableView.reloadRows(at: [ IndexPath(row: index, section: 0) ], with: .fade)
@@ -74,6 +78,7 @@ class ConfigurationListController: ListViewController {
 
 	/// De-register for configuration change notifications.
 	func stopObservingStatus() {
+        os_log("BH_Lin: stopObservingStatus")
 		for manager in managers {
 			NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NEVPNStatusDidChange, object: manager.connection)
 		}

@@ -9,6 +9,7 @@
 import Foundation
 import SimpleTunnelServices
 import NetworkExtension
+import os
 
 /// An object representing the client side of a logical flow of network data in the SimpleTunnel tunneling protocol.
 class ClientAppProxyConnection : Connection {
@@ -99,6 +100,9 @@ class ClientAppProxyConnection : Connection {
 
 	/// Handle the "Open Completed" message received from the SimpleTunnel server for this connection.
 	override func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [NSObject: AnyObject]) {
+        
+        os_log(">> handleOpenCompleted")
+        
 		guard resultCode == .success else {
 			simpleTunnelLog("Failed to open \(identifier), result = \(resultCode)")
 			handleErrorCondition(.peerReset, notifyServer: false)

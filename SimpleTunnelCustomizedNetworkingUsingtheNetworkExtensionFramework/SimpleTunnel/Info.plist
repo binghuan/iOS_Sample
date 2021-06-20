@@ -48,5 +48,10 @@
 	<array>
 		<string>${PLUGIN_BUNDLE_ID}</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
