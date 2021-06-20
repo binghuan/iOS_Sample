@@ -61,15 +61,6 @@ open class ClientTunnel: Tunnel {
             os_log("BH_Lin: The server is specified in the configuration as <host>:<port>. \(serverAddress, privacy: .public)")
             let hostname = serverAddress.substring(with: serverAddress.startIndex..<colonRange.lowerBound)
             let portString = serverAddress.substring(with: serverAddress.index(after: colonRange.lowerBound)..<serverAddress.endIndex)
-            
-            if let range = hostname.range(of: "192.168.0.18") {
-                _ = hostname[..<range.lowerBound] // or str[str.startIndex..<range.lowerBound]
-                os_log("BH_Lin: got 192.168.0.18")
-            }
-            else {
-                os_log("BH_Lin: 192.168.0.18 not present")
-            }
-            
             os_log("BH_Lin: hostname \(hostname , privacy: .public))")
             os_log("BH_Lin: portString \(portString , privacy: .public))")
             
