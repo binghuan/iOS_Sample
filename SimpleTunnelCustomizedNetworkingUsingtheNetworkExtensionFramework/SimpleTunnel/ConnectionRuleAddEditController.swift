@@ -17,7 +17,6 @@ extension NEEvaluateConnectionRuleAction: CustomStringConvertible {
 		switch self {
 			case .connectIfNeeded: return "Connect If Needed"
 			case .neverConnect: return "Never Connect"
-        @unknown default: return "Never Connect"
         }
 	}
 }

@@ -243,5 +243,5 @@ func rangeByMovingStartOfRange(_ range: Range<Int>, byCount: Int) -> CountableRa
 
 public func simpleTunnelLog(_ message: String) {
     os_log("BH_Lin: \(message, privacy: .public)")
-	//NSLog(message)
+	NSLog(message)
 }

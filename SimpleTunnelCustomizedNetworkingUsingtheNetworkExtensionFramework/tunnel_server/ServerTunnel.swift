@@ -61,12 +61,16 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     
     /// Load the configuration from disk.
     class func initializeWithConfigurationFile(path: String) -> Bool {
+        print(">> initializeWithConfigurationFile")
+        
         return ServerTunnel.configuration.loadFromFileAtPath(path: path)
     }
     
     // MARK: Interface
     /// Handle a bytes available event on the read stream.
     func handleBytesAvailable() -> Bool {
+        
+        print(">> handleBytesAvailable")
         
         guard let stream = readStream else { return false }
         var readBuffer = [UInt8](repeating: 0, count: Tunnel.maximumMessageSize)
@@ -77,16 +81,19 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
             
             if packetBytesRemaining == 0 {
                 // Currently reading the total length of the packet.
+                print("Currently reading the total length of the packet.")
                 toRead = MemoryLayout<UInt32>.size - packetBuffer.length
             }
             else {
                 // Currently reading the packet payload.
+                print("Currently reading the packet payload.")
                 toRead = packetBytesRemaining > readBuffer.count ? readBuffer.count : packetBytesRemaining
             }
             
             bytesRead = stream.read(&readBuffer, maxLength: toRead)
             
             guard bytesRead > 0 else {
+                print("guard bytesRead > 0 else")
                 return false
             }
             
@@ -94,6 +101,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
             
             if packetBytesRemaining == 0 {
                 // Reading the total length, see if the 4 length bytes have been received.
+                print("Reading the total length, see if the 4 length bytes have been received.")
                 if packetBuffer.length == MemoryLayout<UInt32>.size {
                     var totalLength: UInt32 = 0
                     packetBuffer.getBytes(&totalLength, length: MemoryLayout.size(ofValue: totalLength))
@@ -101,15 +109,18 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
                     guard totalLength <= UInt32(Tunnel.maximumMessageSize) else { return false }
                     
                     // Compute the length of the payload.
+                    print("Compute the length of the payload.")
                     packetBytesRemaining = Int(totalLength) - MemoryLayout.size(ofValue: totalLength)
                     packetBuffer.length = 0
                 }
             }
             else {
                 // Read a portion of the payload.
+                print("Read a portion of the payload.")
                 packetBytesRemaining -= bytesRead
                 if packetBytesRemaining == 0 {
                     // The entire packet has been received, process it.
+                    print("The entire packet has been received, process it.")
                     if !handlePacket(packetBuffer as Data) {
                         return false
                     }
@@ -123,6 +134,9 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     
     /// Send an "Open Result" message to the client.
     func sendOpenResultForConnection(connectionIdentifier: Int, resultCode: TunnelConnectionOpenResult) {
+        
+        print(">> sendOpenResultForConnection")
+        
         let properties = createMessagePropertiesForConnection(connectionIdentifier, commandType: .openResult, extraProperties:[
             TunnelMessageKey.ResultCode.rawValue: resultCode.rawValue as AnyObject
         ])
@@ -134,6 +148,9 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     
     /// Handle a "Connection Open" message received from the client.
     func handleConnectionOpen(properties: [String: AnyObject]) {
+        
+        print(">> handleConnectionOpen")
+        
         guard let connectionIdentifier = properties[TunnelMessageKey.Identifier.rawValue] as? Int,
               let tunnelLayerNumber = properties[TunnelMessageKey.TunnelType.rawValue] as? Int,
               let tunnelLayer = TunnelLayer(rawValue: tunnelLayerNumber)
@@ -233,6 +250,8 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     /// Close the tunnel.
     override func closeTunnel() {
         
+        print(">> closeTunnel")
+        
         if let stream = readStream {
             if let error = stream.streamError {
                 simpleTunnelLog("Tunnel read stream error: \(error)")
@@ -285,6 +304,9 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     
     /// Write data to the tunnel connection.
     override func writeDataToTunnel(_ data: Data, startingAtOffset: Int) -> Int {
+        
+        print(">> writeDataToTunnel")
+        
         guard let stream = writeStream else { return -1 }
         return writeData(data as Data, toStream: stream, startingAtOffset:startingAtOffset)
     }
@@ -293,14 +315,18 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     // MARK: TunnelDelegate
     /// Handle the "tunnel open" event.
     func tunnelDidOpen(_ targetTunnel: Tunnel) {
+        print(">> tunnelDidOpen")
+        
     }
     
     /// Handle the "tunnel closed" event.
     func tunnelDidClose(_ targetTunnel: Tunnel) {
+        print(">> tunnelDidClose")
     }
     
     /// Handle the "tunnel did send configuration" event.
     func tunnelDidSendConfiguration(_ targetTunnel: Tunnel, configuration: [String : AnyObject]) {
+        print(">> tunnelDidSendConfiguration")
     }
 }
 

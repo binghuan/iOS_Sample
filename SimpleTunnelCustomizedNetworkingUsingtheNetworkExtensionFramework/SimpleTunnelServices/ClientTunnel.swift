@@ -20,8 +20,6 @@ extension NWTCPConnectionState: CustomStringConvertible {
         case .disconnected: return "Disconnected"
         case .invalid: return "Invalid"
         case .waiting: return "Waiting"
-        @unknown default: return "Invalid"
-            
         }
     }
 }
@@ -85,18 +83,23 @@ open class ClientTunnel: Tunnel {
         }
         else {
             // The server is specified in the configuration as a Bonjour service name.
-            endpoint = NWBonjourServiceEndpoint(name: serverAddress, type:Tunnel.serviceType, domain:Tunnel.serviceDomain)
             os_log("BH_Lin: The server is specified in the configuration as a Bonjour service name.")
-            
+            endpoint = NWBonjourServiceEndpoint(name: serverAddress, type:Tunnel.serviceType, domain:Tunnel.serviceDomain)
         }
         
         // Kick off the connection to the server.
-        connection = provider.createTCPConnection(to: endpoint, enableTLS:false, tlsParameters:nil, delegate:nil)
         os_log("BH_Lin: Kick off the connection to the server.")
+       connection = provider.createTCPConnection(to: endpoint, enableTLS:false, tlsParameters:nil, delegate:nil)
+        
+        
+        guard var connection = connection else {
+            os_log("BH_Lin: This should only happen when the extension is already stopped and `RawSocketFactory.TunnelProvider` is set to `nil`.")
+            return nil
+        }
         
         // Register for notificationes when the connection status changes.
         os_log("BH_Lin: [START] Register for notificationes when the connection status changes.")
-        connection!.addObserver(self, forKeyPath: "state", options: .initial, context: &connection)
+        connection.addObserver(self, forKeyPath: "state", options: .initial, context: &connection)
         os_log("BH_Lin: [DONE ] Register for notificationes when the connection status changes.")
         
         return nil
@@ -192,7 +195,6 @@ open class ClientTunnel: Tunnel {
             return
         }
         
-        os_log("BH_Lin: Tunnel connection state changed to \(self.connection!.state)")
         simpleTunnelLog("Tunnel connection state changed to \(connection!.state)")
         
         switch connection!.state {

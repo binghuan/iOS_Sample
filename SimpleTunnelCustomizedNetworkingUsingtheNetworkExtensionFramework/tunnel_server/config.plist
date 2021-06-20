@@ -5,18 +5,20 @@
 	<key>IPv4</key>
 	<dict>
 		<key>Routes</key>
-		<dict>
-			<key>Address</key>
-			<string>192.168.0.18:10808</string>
-			<key>Netmask</key>
-			<string>255.255.255.0</string>
-		</dict>
+		<array>
+			<dict>
+				<key>Address</key>
+				<string>192.168.0.18</string>
+				<key>Netmask</key>
+				<string>255.255.255.0</string>
+			</dict>
+		</array>
 		<key>Pool</key>
 		<dict>
 			<key>EndAddress</key>
-			<string>192.168.0.255</string>
+			<string>192.168.0.205</string>
 			<key>StartAddress</key>
-			<string>192.168.0.200</string>
+			<string>192.168.0.201</string>
 		</dict>
 	</dict>
 </dict>

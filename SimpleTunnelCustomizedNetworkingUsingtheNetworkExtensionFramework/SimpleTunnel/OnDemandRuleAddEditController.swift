@@ -19,7 +19,6 @@ extension NEOnDemandRuleAction: CustomStringConvertible {
 			case .disconnect: return "Disconnect"
 			case .ignore: return "Maintain"
 			case .evaluateConnection: return "Evaluate Connection"
-        @unknown default: return "Maintain"
         }
 	}
 }
@@ -221,8 +220,6 @@ class OnDemandRuleAddEditController: ConfigurationParametersViewController {
 
 			case .ignore:
 				newRule = NEOnDemandRuleIgnore()
-        @unknown default:
-            newRule = NEOnDemandRuleIgnore()
         }
 
 		newRule.dnsSearchDomainMatch = targetRule.dnsSearchDomainMatch

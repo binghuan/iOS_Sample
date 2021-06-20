@@ -43,6 +43,8 @@ class ServerConnection: Connection, StreamDelegate {
     override func closeConnection(_ direction: TunnelConnectionCloseDirection) {
         super.closeConnection(direction)
         
+        print("tunnelDidSendConfiguration")
+        
         if let stream = writeStream, isClosedForWrite && savedData.isEmpty {
             if let error = stream.streamError {
                 simpleTunnelLog("Connection \(identifier) write stream error: \(error)")
