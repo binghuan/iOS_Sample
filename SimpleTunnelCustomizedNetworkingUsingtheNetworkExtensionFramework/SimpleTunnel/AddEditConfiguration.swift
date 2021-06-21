@@ -172,6 +172,9 @@ class AddEditConfiguration: ConfigurationParametersViewController {
 
 	/// Save the configuration to the Network Extension preferences.
 	@IBAction func saveTargetManager(_ sender: AnyObject) {
+        
+        print("saveTargetManager")
+        
 		if !proxiesCell.isOn {
 			targetManager.protocolConfiguration?.proxySettings = nil
 		}
@@ -182,6 +185,7 @@ class AddEditConfiguration: ConfigurationParametersViewController {
 			}
 
 			// Transition back to the configuration list view.
+            print("Transition back to the configuration list view.")
 			self.performSegue(withIdentifier: "save-configuration", sender: sender)
 		}
 	}

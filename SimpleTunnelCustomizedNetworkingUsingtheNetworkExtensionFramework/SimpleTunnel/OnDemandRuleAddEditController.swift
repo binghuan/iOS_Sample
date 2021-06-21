@@ -139,12 +139,12 @@ class OnDemandRuleAddEditController: ConfigurationParametersViewController {
 				guard let enumController = segue.destination as? EnumPickerController else { break }
 
 				let enumValues: [NEOnDemandRuleInterfaceType] = [ .any, .wiFi, .cellular ],
-					stringValues = enumValues.flatMap { $0.description },
+					//stringValues = enumValues.flatMap { $0.description },
                     currentSelection = enumValues.firstIndex { $0 == targetRule.interfaceTypeMatch }
 
-				enumController.setValues(stringValues.map(String.init), title: "Interface Type", currentSelection: currentSelection) { newRow in
-					self.targetRule.interfaceTypeMatch = enumValues[newRow]
-				}
+                enumController.setValues(["Any", "Wi-Fi", "Cellular"], title: "Interface Type", currentSelection: currentSelection) { newRow in
+                    self.targetRule.interfaceTypeMatch = enumValues[newRow]
+                }
 
 			case "edit-dns-servers":
 				// The user tapped on the DNS Servers cell.
@@ -167,12 +167,12 @@ class OnDemandRuleAddEditController: ConfigurationParametersViewController {
 				guard let enumController = segue.destination as? EnumPickerController else { break }
 
 				let enumValues: [NEOnDemandRuleAction] = [ .evaluateConnection, .disconnect, .connect, .ignore ],
-					stringValues = enumValues.flatMap { $0.description },
+					//stringValues = enumValues.flatMap { $0.description },
                     currentSelection = enumValues.firstIndex { $0 == targetRule.action }
 
-				enumController.setValues(stringValues.map(String.init), title: "Action", currentSelection: currentSelection) { newRow in
-					self.changeTargetRuleType(enumValues[newRow])
-				}
+                enumController.setValues(["Evaluate Connection", "Disconnect", "Connect", "Ignore"], title: "Action", currentSelection: currentSelection) { newRow in
+                    self.changeTargetRuleType(enumValues[newRow])
+                }
 
 			case "edit-connection-rules":
 				// The user tapped on the Connection Rules cell.

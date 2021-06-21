@@ -44,9 +44,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         }
         else {
             // Save the completion handler for when the tunnel is fully established.
+            os_log("BH_Lin: Save the completion handler for when the tunnel is fully established.")
             pendingStartCompletion = completionHandler
             tunnel = newTunnel
-            os_log("BH_Lin: Save the completion handler for when the tunnel is fully established.")
         }
         os_log("BH_Lin: --- startTunnel ---")
     }
@@ -56,12 +56,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         os_log("BH_Lin: +++ stopTunnel +++")
         
         // Clear out any pending start completion handler.
-        pendingStartCompletion = nil
         os_log("BH_Lin: Clear out any pending start completion handler.")
+        pendingStartCompletion = nil
         
         // Save the completion handler for when the tunnel is fully disconnected.
-        pendingStopCompletion = completionHandler
         os_log("BH_Lin: Save the completion handler for when the tunnel is fully disconnected.")
+        pendingStopCompletion = completionHandler
         tunnel?.closeTunnel()
         os_log("BH_Lin: --- stopTunnel ---")
     }
@@ -114,8 +114,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         }
         else {
             // Closed as the result of an error on the tunnel connection, cancel the tunnel.
-            cancelTunnelWithError(tunnel?.lastError)
             os_log("BH_Lin: Closed as the result of an error on the tunnel connection, cancel the tunnel.")
+            cancelTunnelWithError(tunnel?.lastError)
         }
         tunnel = nil
         os_log("BH_Lin: --- tunnelDidClose ---")

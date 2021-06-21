@@ -196,6 +196,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
         case writeStream!:
             switch eventCode {
             case [.hasSpaceAvailable]:
+                print(">> writeStream - hasSpaceAvailable")
                 // Send any buffered data.
                 if !savedData.isEmpty {
                     guard savedData.writeToStream(writeStream!) else {
@@ -223,12 +224,15 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
             var needCloseTunnel = false
             switch eventCode {
             case [.hasBytesAvailable]:
+                print(">> readStream - hasBytesAvailable")
                 needCloseTunnel = !handleBytesAvailable()
                 
             case [.openCompleted]:
+                print(">> readStream - openCompleted")
                 delegate?.tunnelDidOpen(self)
                 
             case [.errorOccurred], [.endEncountered]:
+                print(">> readStream - errorOccurred")
                 needCloseTunnel = true
                 
             default:
