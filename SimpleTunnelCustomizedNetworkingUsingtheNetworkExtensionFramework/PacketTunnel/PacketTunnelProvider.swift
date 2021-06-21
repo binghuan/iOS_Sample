@@ -37,7 +37,15 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         let newTunnel = ClientTunnel()
         newTunnel.delegate = self
-        
+
+        // reference: https://stackoverflow.com/questions/52476665/nepackettunnelprovider-sniffer-ios
+//        let networkSettings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 500)
+//        let dnsSettings = NEDNSSettings(servers: ["8.8.8.8", "1.1.1.1"])
+//        networkSettings.dnsSettings = dnsSettings
+//        setTunnelNetworkSettings(networkSettings) {_ in
+//            os_log("BH_Lin: setTunnelNetworkSettings -> Handle success")
+//        }
+
         if let error = newTunnel.startTunnel(self) {
             os_log("BH_Lin: newTunnel.startTunnel error")
             completionHandler(error as NSError)
@@ -221,5 +229,51 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         os_log("BH_Lin: --- createTunnelSettingsFromConfiguration ---")
         
         return newSettings
+    }
+    
+    private func initTunnelSettings(proxyHost: String, proxyPort: Int) -> NEPacketTunnelNetworkSettings {
+        let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "192.168.0.18:500")
+        
+        /* proxy settings */
+        let proxySettings: NEProxySettings = NEProxySettings()
+        proxySettings.httpServer = NEProxyServer(
+            address: proxyHost,
+            port: proxyPort
+        )
+        proxySettings.httpsServer = NEProxyServer(
+            address: proxyHost,
+            port: proxyPort
+        )
+        proxySettings.autoProxyConfigurationEnabled = false
+        proxySettings.httpEnabled = true
+        proxySettings.httpsEnabled = true
+        proxySettings.excludeSimpleHostnames = true
+        proxySettings.exceptionList = [
+            "192.168.0.0/16",
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "127.0.0.1",
+            "localhost",
+            "*.local"
+        ]
+        settings.proxySettings = proxySettings
+        
+        /* ipv4 settings */
+        let ipv4Settings: NEIPv4Settings = NEIPv4Settings(
+            addresses: [settings.tunnelRemoteAddress],
+            subnetMasks: ["255.255.255.255"]
+        )
+        ipv4Settings.includedRoutes = [NEIPv4Route.default()]
+        ipv4Settings.excludedRoutes = [
+            NEIPv4Route(destinationAddress: "192.168.0.0", subnetMask: "255.255.0.0"),
+            NEIPv4Route(destinationAddress: "10.0.0.0", subnetMask: "255.0.0.0"),
+            NEIPv4Route(destinationAddress: "172.16.0.0", subnetMask: "255.240.0.0")
+        ]
+        settings.ipv4Settings = ipv4Settings
+        
+        /* MTU */
+        settings.mtu = 1500
+        
+        return settings
     }
 }

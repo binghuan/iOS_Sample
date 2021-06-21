@@ -120,7 +120,7 @@ class StatusViewController: UITableViewController {
                 try targetManager.connection.startVPNTunnel()
             }
             catch {
-                os_log("BH_Lin: Failed to start the VPN")
+                os_log("BH_Lin: Failed to start the VPN: \(error.localizedDescription, privacy: .public)")
                 simpleTunnelLog("Failed to start the VPN: \(error)")
             }
         }

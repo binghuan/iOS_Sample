@@ -53,7 +53,7 @@ open class ClientTunnel: Tunnel {
             return .badConfiguration
         }
         
-        let endpoint: NWEndpoint
+        var endpoint: NWEndpoint
         
         if let colonRange = serverAddress.rangeOfCharacter(from: CharacterSet(charactersIn: ":"), options: [], range: nil) {
             
@@ -70,7 +70,7 @@ open class ClientTunnel: Tunnel {
             }
             
             endpoint = NWHostEndpoint(hostname:hostname, port:portString)
-            os_log("BH_Lin: OK> NWHostEndpoint")
+            os_log("BH_Lin: NWHostEndpoint(hostname:\(hostname, privacy: .public), port:\(portString,privacy: .public)")
         }
         else {
             // The server is specified in the configuration as a Bonjour service name.
@@ -80,17 +80,16 @@ open class ClientTunnel: Tunnel {
         
         // Kick off the connection to the server.
         os_log("BH_Lin: Kick off the connection to the server.")
-       connection = provider.createTCPConnection(to: endpoint, enableTLS:false, tlsParameters:nil, delegate:nil)
+        connection = provider.createTCPConnection(to: endpoint, enableTLS:false, tlsParameters:nil, delegate:nil)
         
-        
-        guard var connection = connection else {
-            os_log("BH_Lin: This should only happen when the extension is already stopped and `RawSocketFactory.TunnelProvider` is set to `nil`.")
+        guard var tcpConnection = connection else {
+            os_log("BH_Lin: Fail - createTCPConnection")
             return nil
         }
         
         // Register for notificationes when the connection status changes.
         os_log("BH_Lin: [START] Register for notificationes when the connection status changes.")
-        connection.addObserver(self, forKeyPath: "state", options: .initial, context: &connection)
+        tcpConnection.addObserver(self, forKeyPath: "state", options: .initial, context: &tcpConnection)
         os_log("BH_Lin: [DONE ] Register for notificationes when the connection status changes.")
         
         return nil

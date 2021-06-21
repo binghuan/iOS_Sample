@@ -17,7 +17,9 @@
 		8261E6E7267BBBBF00F92E07 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
 		82AB7D89267BB7C900901A1C /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
 		82AB7D8A267BB81100901A1C /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
-		82EF3557267E3F6600B14CD6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
+		82AF261C2680744D00CA8E80 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AF261B2680744D00CA8E80 /* NetworkExtension.framework */; };
+		82AF261D268083B000CA8E80 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
+		82AF261E268083B000CA8E80 /* NetworkExtension.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		82EF3558267E3F7100B14CD6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82AB7D88267BB7C900901A1C /* NetworkExtension.framework */; };
 		B01A16991A8A616000BC9EFD /* SimpleTunnelServices.h in Headers */ = {isa = PBXBuildFile; fileRef = B01A16981A8A616000BC9EFD /* SimpleTunnelServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B01A16AC1A8A616000BC9EFD /* SimpleTunnelServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B01A16941A8A615F00BC9EFD /* SimpleTunnelServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -132,6 +134,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		82AF261F268083B000CA8E80 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				82AF261E268083B000CA8E80 /* NetworkExtension.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B01A16B21A8A616000BC9EFD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,6 +197,8 @@
 		720FCAB81B05814C00B168EB /* DataFilterExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DataFilterExtension.entitlements; sourceTree = "<group>"; };
 		720FCABA1B05815B00B168EB /* ControlFilterExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ControlFilterExtension.entitlements; sourceTree = "<group>"; };
 		82AB7D88267BB7C900901A1C /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		82AF261B2680744D00CA8E80 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/NetworkExtension.framework; sourceTree = DEVELOPER_DIR; };
+		82AF2620268090A900CA8E80 /* tunnel_server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tunnel_server.entitlements; sourceTree = "<group>"; };
 		B01A16941A8A615F00BC9EFD /* SimpleTunnelServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimpleTunnelServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01A16971A8A616000BC9EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B01A16981A8A616000BC9EFD /* SimpleTunnelServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleTunnelServices.h; sourceTree = "<group>"; };
@@ -264,6 +279,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82AF261C2680744D00CA8E80 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +295,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82EF3557267E3F6600B14CD6 /* NetworkExtension.framework in Frameworks */,
+				82AF261D268083B000CA8E80 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +351,7 @@
 		82AB7D87267BB7C900901A1C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82AF261B2680744D00CA8E80 /* NetworkExtension.framework */,
 				82AB7D88267BB7C900901A1C /* NetworkExtension.framework */,
 			);
 			name = Frameworks;
@@ -453,6 +470,7 @@
 		B0993D3C1A8A6DBC00510E18 /* tunnel_server */ = {
 			isa = PBXGroup;
 			children = (
+				82AF2620268090A900CA8E80 /* tunnel_server.entitlements */,
 				C4B1C4A61A926E610037B19F /* config.plist */,
 				B0993D421A8A6E1D00510E18 /* AddressPool.swift */,
 				B0993D431A8A6E1D00510E18 /* ServerConfiguration.swift */,
@@ -585,6 +603,7 @@
 				B07CCB691A89414500A4F1E5 /* Sources */,
 				B07CCB6A1A89414500A4F1E5 /* Frameworks */,
 				B07CCB6B1A89414500A4F1E5 /* Resources */,
+				82AF261F268083B000CA8E80 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1238,6 +1257,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = tunnel_server/tunnel_server.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VH8FYD6YYB;
@@ -1256,6 +1276,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = tunnel_server/tunnel_server.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

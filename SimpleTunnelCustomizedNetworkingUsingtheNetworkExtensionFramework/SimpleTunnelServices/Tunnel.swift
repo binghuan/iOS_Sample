@@ -7,6 +7,7 @@
 */
 
 import Foundation
+import os
 
 /// Command types in the SimpleTunnel protocol
 public enum TunnelCommand: Int, CustomStringConvertible {
@@ -154,6 +155,7 @@ open class Tunnel: NSObject {
 
 	/// Serialize a message
 	func serializeMessage(_ messageProperties: [String: AnyObject]) -> Data? {
+        simpleTunnelLog("serializeMessage")
 		var messageData: NSMutableData?
 		do {
 			/*
@@ -179,6 +181,7 @@ open class Tunnel: NSObject {
 
 	/// Send a message on the tunnel connection.
 	func sendMessage(_ messageProperties: [String: AnyObject]) -> Bool {
+        simpleTunnelLog("sendMessage")
 		var written: Int = 0
 
         guard let messageData = serializeMessage(messageProperties) else {
@@ -272,6 +275,7 @@ open class Tunnel: NSObject {
 
 	/// Process a message payload.
 	func handlePacket(_ packetData: Data) -> Bool {
+        simpleTunnelLog("handlePacket")
 		let properties: [String: AnyObject]
 		do {
 			properties = try PropertyListSerialization.propertyList(from: packetData, options: PropertyListSerialization.MutabilityOptions(), format: nil) as! [String: AnyObject]
