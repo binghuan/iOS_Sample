@@ -269,6 +269,7 @@ open class ClientTunnel: Tunnel {
         switch commandType {
         case .openResult:
             // A logical connection was opened successfully.
+            os_log("BH_Lin: A logical connection was opened successfully.")
             guard let targetConnection = connection,
                   let resultCodeNumber = properties[TunnelMessageKey.ResultCode.rawValue] as? Int,
                   let resultCode = TunnelConnectionOpenResult(rawValue: resultCodeNumber)
@@ -287,7 +288,6 @@ open class ClientTunnel: Tunnel {
             delegate?.tunnelDidSendConfiguration(self, configuration: configuration)
             
         default:
-            os_log("BH_Lin: Tunnel received an invalid command")
             simpleTunnelLog("Tunnel received an invalid command")
             success = false
         }

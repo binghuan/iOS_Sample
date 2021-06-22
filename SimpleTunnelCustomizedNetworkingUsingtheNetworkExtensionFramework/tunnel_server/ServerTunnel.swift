@@ -295,9 +295,11 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     override func handleMessage(_ commandType: TunnelCommand, properties: [String: AnyObject], connection: Connection?) -> Bool {
         switch commandType {
         case .open:
+            NSLog(">> handleMessage - open")
             handleConnectionOpen(properties: properties)
             
         case .fetchConfiguration:
+            NSLog(">> handleMessage - fetchConfiguration")
             var personalized = ServerTunnel.configuration.configuration
             personalized.removeValue(forKey: SettingsKey.IPv4.rawValue)
             let messageProperties = createMessagePropertiesForConnection(0, commandType: .fetchConfiguration, extraProperties: [TunnelMessageKey.Configuration.rawValue: personalized as AnyObject])
