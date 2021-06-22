@@ -87,6 +87,8 @@ open class ClientTunnel: Tunnel {
             return nil
         }
         
+        connection = tcpConnection
+        
         // Register for notificationes when the connection status changes.
         os_log("BH_Lin: [START] Register for notificationes when the connection status changes.")
         tcpConnection.addObserver(self, forKeyPath: "state", options: .initial, context: &tcpConnection)
@@ -168,24 +170,43 @@ open class ClientTunnel: Tunnel {
     
     /// Send a message to the tunnel server.
     open func sendMessage(_ messageProperties: [String: AnyObject], completionHandler: @escaping (NSError?) -> Void) {
+        os_log("BH_Lin: +++ sendMessage")
         guard let messageData = serializeMessage(messageProperties) else {
+            os_log("BH_Lin: sendMessage - SimpleTunnelError.internalError")
             completionHandler(SimpleTunnelError.internalError as NSError)
             return
         }
         
-        connection?.write(messageData, completionHandler: completionHandler as! (Error?) -> Void)
+        
+        os_log("BH_Lin: sendMessage - connection?.write: isEmpty = \(messageData.isEmpty) , data = \(messageData, privacy: .public)")
+        //connection?.write(messageData, completionHandler: completionHandler as! (Error?) -> Void)
+        //connection?.write(messageData, completionHandler: completionHandler())
+        //connection?.write(messageData, completionHandler: )
+        connection?.write(messageData, completionHandler: {error -> Void in
+            if(!error.debugDescription == nil) {
+                os_log("BH_Lin: NG> sendMessage - connection?.write: \(error.debugDescription, privacy: .public)")
+            }
+        })
+        os_log("BH_Lin: --- sendMessage")
     }
     
     // MARK: NSObject
     
     /// Handle changes to the tunnel connection state.
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == "state" && context?.assumingMemoryBound(to: Optional<NWTCPConnection>.self).pointee == connection else {
+        
+        simpleTunnelLog("+++ observeValue forKeyPath \(String(describing: keyPath))")
+        
+        guard keyPath == "state"
+        //&& context?.assumingMemoryBound(to: Optional<NWTCPConnection>.self).pointee == connection
+        else {
+            simpleTunnelLog("!!!! bypass forKeyPath \(String(describing: keyPath))")
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
+        simpleTunnelLog("--- observeValue forKeyPath \(String(describing: keyPath))")
         
-        simpleTunnelLog("Tunnel connection state changed to \(connection!.state)")
+        simpleTunnelLog("Tunnel connection state changed to \(connection!.state), \(String(describing: connection?.endpoint))")
         
         switch connection!.state {
         case .connected:

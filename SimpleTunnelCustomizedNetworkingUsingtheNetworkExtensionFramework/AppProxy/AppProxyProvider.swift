@@ -144,11 +144,13 @@ class AppProxyProvider: NEAppProxyProvider, TunnelDelegate {
 
 		self.setTunnelNetworkSettings(newSettings) { error in
 			if error != nil {
+                os_log("BH_Lin: NG> setTunnelNetworkSettings")
 				let startError = SimpleTunnelError.badConfiguration
 				self.pendingStartCompletion?(startError as NSError)
 				self.pendingStartCompletion = nil
 			}
 			else {
+                os_log("BH_Lin: OK> setTunnelNetworkSettings")
 				self.pendingStartCompletion?(nil)
 				self.pendingStartCompletion = nil
 			}

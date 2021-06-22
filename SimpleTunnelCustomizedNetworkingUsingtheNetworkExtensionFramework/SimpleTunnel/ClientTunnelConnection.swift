@@ -48,17 +48,25 @@ class ClientTunnelConnection: Connection {
 	func open() {
         os_log("BH_Lin: ClientTunnelConnection - open")
         
-		guard let clientTunnel = tunnel as? ClientTunnel else { return }
+		guard let clientTunnel = tunnel as? ClientTunnel else {
+            os_log("BH_Lin: guard let clientTunnel = tunnel as? ClientTunnel")
+            return
+        }
 
+        os_log("BH_Lin: ClientTunnelConnection - open - checkpoint A")
 		let properties = createMessagePropertiesForConnection(identifier, commandType: .open, extraProperties:[
 				TunnelMessageKey.TunnelType.rawValue: TunnelLayer.ip.rawValue as AnyObject
 			])
+        
+        os_log("BH_Lin: ClientTunnelConnection - open - checkpoint B")
 
 		clientTunnel.sendMessage(properties) { error in
 			if let error = error {
+                os_log("BH_Lin: ClientTunnelConnection - open, error \(error)")
 				self.delegate.tunnelConnectionDidClose(self, error: error)
 			}
 		}
+        os_log("BH_Lin: ClientTunnelConnection - open - checkpoint C")
 	}
 
 	/// Handle packets coming from the packet flow.

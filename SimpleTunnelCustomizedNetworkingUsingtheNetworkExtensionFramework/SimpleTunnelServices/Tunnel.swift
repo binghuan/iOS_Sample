@@ -155,7 +155,7 @@ open class Tunnel: NSObject {
 
 	/// Serialize a message
 	func serializeMessage(_ messageProperties: [String: AnyObject]) -> Data? {
-        simpleTunnelLog("serializeMessage")
+        os_log(">> serializeMessage")
 		var messageData: NSMutableData?
 		do {
 			/*
@@ -168,10 +168,15 @@ open class Tunnel: NSObject {
 			 *
 			 */
 			let payload = try PropertyListSerialization.data(fromPropertyList: messageProperties, format: .binary, options: 0)
+            os_log("serializeMessage - checkpoint A")
 			var totalLength: UInt32 = UInt32(payload.count + MemoryLayout<UInt32>.size)
+            os_log("serializeMessage - checkpoint B")
 			messageData = NSMutableData(capacity: Int(totalLength))
+            os_log("serializeMessage - checkpoint C")
 			messageData?.append(&totalLength, length: MemoryLayout<UInt32>.size)
+            os_log("serializeMessage - checkpoint D")
 			messageData?.append(payload)
+            os_log("serializeMessage - checkpoint E")
 		}
 		catch {
 			simpleTunnelLog("Failed to create a data object from a message property list: \(messageProperties)")
@@ -181,11 +186,11 @@ open class Tunnel: NSObject {
 
 	/// Send a message on the tunnel connection.
 	func sendMessage(_ messageProperties: [String: AnyObject]) -> Bool {
-        simpleTunnelLog("sendMessage")
+        os_log("BH_Lin: +++ sendMessage")
 		var written: Int = 0
 
         guard let messageData = serializeMessage(messageProperties) else {
-            simpleTunnelLog("Failed to create message data")
+            os_log("BH_Lin: Failed to create message data")
             return false
         }
                 
@@ -195,6 +200,8 @@ open class Tunnel: NSObject {
             if written < 0 {
                 closeTunnel()
             }
+        } else {
+            os_log("BH_Lin: savedData is not Empty")
         }
 
 		// If not all of the data was written, save the message data to be sent when possible.
@@ -206,7 +213,8 @@ open class Tunnel: NSObject {
                 connection.suspend()
             }
         }
-            
+         
+        os_log("BH_Lin: --- sendMessage")
         return true
 	}
 

@@ -98,8 +98,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         // Open the logical flow of packets through the tunnel.
         let newConnection = ClientTunnelConnection(tunnel: tunnel!, clientPacketFlow: packetFlow, connectionDelegate: self)
-        os_log("BH_Lin: Open the logical flow of packets through the tunnel.")
+        os_log("BH_Lin: >> Open the logical flow of packets through the tunnel.")
         newConnection.open()
+        os_log("BH_Lin: << Open the logical flow of packets through the tunnel.")
         tunnelConnection = newConnection
         os_log("BH_Lin: --- tunnelDidOpen ---")
     }

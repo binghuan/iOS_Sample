@@ -224,8 +224,10 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
             var needCloseTunnel = false
             switch eventCode {
             case [.hasBytesAvailable]:
+                
                 NSLog(">> readStream - hasBytesAvailable")
                 needCloseTunnel = !handleBytesAvailable()
+                NSLog("<< readStream - hasBytesAvailable, needCloseTunnel: \(needCloseTunnel)")
                 
             case [.openCompleted]:
                 NSLog(">> readStream - openCompleted")
@@ -234,6 +236,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
             case [.errorOccurred], [.endEncountered]:
                 NSLog(">> readStream - errorOccurred")
                 needCloseTunnel = true
+                NSLog("<< readStream - errorOccurred, needCloseTunnel: \(needCloseTunnel)")
                 
             default:
                 break
