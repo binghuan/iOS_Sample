@@ -85,6 +85,13 @@ class StatusViewController: UITableViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
+    }
+    
     /// Handle the event where the view is being hidden.
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

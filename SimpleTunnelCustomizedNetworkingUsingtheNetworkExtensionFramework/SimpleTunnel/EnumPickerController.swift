@@ -50,6 +50,13 @@ class EnumPickerController: UIViewController, UIPickerViewDataSource, UIPickerVi
 			enumPicker.selectRow(row, inComponent: 0, animated: false)
 		}
 	}
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
+    }
 
 	// MARK: UIPickerViewDataSource
 

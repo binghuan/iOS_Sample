@@ -34,6 +34,9 @@ class ConfigurationListController: ListViewController {
 	override func viewDidLoad() {
 		isAddEnabled = true
 		super.viewDidLoad()
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
 	}
 
 	/// Handle the event of the view being displayed.

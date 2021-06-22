@@ -52,6 +52,9 @@ class ProxySettingsController: ConfigurationParametersViewController {
 	/// Handle the event where the view is loaded into memory.
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
 
 		cells = [
 			pacSwitchCell,

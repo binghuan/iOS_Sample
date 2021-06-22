@@ -51,7 +51,7 @@ class AddEditConfiguration: ConfigurationParametersViewController {
 	/// Handle the event of the view being loaded into memory.
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+        
 		// Set up the table view cells
 
 		cells = [
@@ -98,6 +98,9 @@ class AddEditConfiguration: ConfigurationParametersViewController {
 		usernameCell.valueChanged = {
 			self.targetManager.protocolConfiguration?.username = self.usernameCell.textField.text
 		}
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
 	}
 
 	/// Handle the event of the view being displayed.

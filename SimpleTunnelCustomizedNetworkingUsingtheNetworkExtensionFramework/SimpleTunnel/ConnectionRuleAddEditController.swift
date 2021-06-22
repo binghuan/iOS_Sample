@@ -52,6 +52,9 @@ class ConnectionRuleAddEditController: ConfigurationParametersViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
+        
         cells = [
             actionCell,
             domainsCell,

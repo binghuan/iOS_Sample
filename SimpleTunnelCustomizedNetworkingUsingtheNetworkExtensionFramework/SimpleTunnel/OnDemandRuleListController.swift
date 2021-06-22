@@ -44,6 +44,9 @@ class OnDemandRuleListController: ListViewController {
 		isAddEnabled = true
 		isAlwaysEditing = true
 		super.viewDidLoad()
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
 	}
 
 	// MARK: Interface

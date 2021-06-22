@@ -58,6 +58,9 @@ class StringListController: ListViewController {
 		addCell = addStringCell
 
 		super.viewDidLoad()
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
 	}
 
 	/// Handle the event when the view is being displayed.

@@ -66,6 +66,9 @@ class ListViewController: UITableViewController {
 		else {
 			navigationItem.rightBarButtonItem = editButtonItem
 		}
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
 	}
 
 	/// Handle the event of the view being displayed.

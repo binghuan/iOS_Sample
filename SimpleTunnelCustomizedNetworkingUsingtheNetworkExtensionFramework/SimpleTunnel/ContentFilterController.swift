@@ -75,6 +75,9 @@ class ContentFilterController: UITableViewController {
                 FilterUtilities.defaults?.setValue(serverIPAddress, forKey: "serverAddress")
             }
         }
+        
+        // Always adopt a light interface style.
+        overrideUserInterfaceStyle = .light
     }
     
     /// Handle the event where the view is loaded into memory.
