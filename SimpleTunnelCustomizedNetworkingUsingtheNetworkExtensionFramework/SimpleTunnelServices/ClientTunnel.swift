@@ -183,7 +183,7 @@ open class ClientTunnel: Tunnel {
         //connection?.write(messageData, completionHandler: completionHandler())
         //connection?.write(messageData, completionHandler: )
         connection?.write(messageData, completionHandler: {error -> Void in
-            if(!error.debugDescription == nil) {
+            if(error.debugDescription != "nil") {
                 os_log("BH_Lin: NG> sendMessage - connection?.write: \(error.debugDescription, privacy: .public)")
             }
         })
