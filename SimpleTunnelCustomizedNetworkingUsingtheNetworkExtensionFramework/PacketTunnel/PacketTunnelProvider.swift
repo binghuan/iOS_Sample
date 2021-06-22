@@ -139,7 +139,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
     
     /// Handle the event of the logical flow of packets being established through the tunnel.
     func tunnelConnectionDidOpen(_ connection: ClientTunnelConnection, configuration: [NSObject: AnyObject]) {
-        os_log("BH_Lin: +++ tunnelConnectionDidOpen +++")
+        os_log("BH_Lin: +++ tunnelConnectionDidOpen +++ \(configuration.description, privacy: .public)")
         
         // Create the virtual interface settings.
         os_log("BH_Lin: Create the virtual interface settings.")

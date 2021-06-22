@@ -262,7 +262,7 @@ open class ClientTunnel: Tunnel {
     /// Handle a message received from the tunnel server.
     override func handleMessage(_ commandType: TunnelCommand, properties: [String: AnyObject], connection: Connection?) -> Bool {
         
-        os_log("BH_Lin: handleMessage")
+        os_log("BH_Lin: handleMessage \(properties.description, privacy: .public)")
         
         var success = true
         
@@ -282,6 +282,7 @@ open class ClientTunnel: Tunnel {
             targetConnection.handleOpenCompleted(resultCode, properties:properties as [NSObject : AnyObject])
             
         case .fetchConfiguration:
+            os_log("BH_Lin: fetchConfiguration")
             guard let configuration = properties[TunnelMessageKey.Configuration.rawValue] as? [String: AnyObject]
             else { break }
             
