@@ -59,5 +59,5 @@ else {
 }
 (termSignalSource as! DispatchObject).resume()
 
-print("Test 2021-06-21 11:25")
+NSLog("Test 2021-06-21 11:25")
 RunLoop.main.run()
