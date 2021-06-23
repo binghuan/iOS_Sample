@@ -105,12 +105,14 @@ class StatusViewController: UITableViewController {
         targetManager.isEnabled = enabledSwitch.isOn
         targetManager.saveToPreferences { error in
             guard error == nil else {
+                os_log("BH_Lin: Error in enabledToggled: \(error.debugDescription, privacy: .public)")
                 self.enabledSwitch.isOn = self.targetManager.isEnabled
                 self.startStopToggle.isEnabled = self.enabledSwitch.isOn
                 return
             }
             
             self.targetManager.loadFromPreferences { error in
+                os_log("BH_Lin: Error in enabledToggled:loadFromPreferences \(error.debugDescription, privacy: .public)")
                 self.enabledSwitch.isOn = self.targetManager.isEnabled
                 self.startStopToggle.isEnabled = self.enabledSwitch.isOn
             }
@@ -122,6 +124,19 @@ class StatusViewController: UITableViewController {
         os_log("BH_Lin: startStopToggled - Handle the user toggling the \"VPN\" switch.")
         if targetManager.connection.status == .disconnected ||
             targetManager.connection.status == .invalid {
+            
+//            NEAppProxyProviderManager.loadAllFromPreferences { newManagers, error in
+//                /* Extract the manager from managers as your NEAppProxyProviderManager */
+//                do {
+//                    os_log("BH_Lin: targetManager.connection.startVPNTunnel()")
+//                    try self.targetManager.connection.startVPNTunnel()
+//                } catch {
+//                    os_log("BH_Lin: Failed to start the VPN: \(error.localizedDescription, privacy: .public)")
+//                }
+//            }
+//            
+//            return
+            
             do {
                 
                 if let proxySettings = targetManager.protocolConfiguration?.proxySettings {

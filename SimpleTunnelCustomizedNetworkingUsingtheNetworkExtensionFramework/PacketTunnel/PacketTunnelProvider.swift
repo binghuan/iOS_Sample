@@ -38,14 +38,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         let newTunnel = ClientTunnel()
         newTunnel.delegate = self
 
-        // reference: https://stackoverflow.com/questions/52476665/nepackettunnelprovider-sniffer-ios
-//        let networkSettings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 500)
-//        let dnsSettings = NEDNSSettings(servers: ["8.8.8.8", "1.1.1.1"])
-//        networkSettings.dnsSettings = dnsSettings
-//        setTunnelNetworkSettings(networkSettings) {_ in
-//            os_log("BH_Lin: setTunnelNetworkSettings -> Handle success")
-//        }
-
         if let error = newTunnel.startTunnel(self) {
             os_log("BH_Lin: newTunnel.startTunnel error")
             completionHandler(error as NSError)
@@ -151,6 +143,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         // Set the virtual interface settings.
         os_log("BH_Lin: Set the virtual interface settings.")
+        
+        // reference: https://stackoverflow.com/questions/52476665/nepackettunnelprovider-sniffer-ios
+//        settings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 500)
+//        let dnsSettings = NEDNSSettings(servers: ["8.8.8.8", "1.1.1.1"])
+//        settings.dnsSettings = dnsSettings
+        
         setTunnelNetworkSettings(settings) { error in
             os_log("BH_Lin: +++ setTunnelNetworkSettings +++")
             
@@ -233,7 +231,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
     }
     
     private func initTunnelSettings(proxyHost: String, proxyPort: Int) -> NEPacketTunnelNetworkSettings {
-        let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "192.168.0.18:500")
+        let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "127.0.0.1")
         
         /* proxy settings */
         let proxySettings: NEProxySettings = NEProxySettings()
@@ -250,7 +248,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = [
-            "192.168.0.0/16",
+            //"192.168.0.0/16",
             "10.0.0.0/8",
             "172.16.0.0/12",
             "127.0.0.1",
