@@ -123,6 +123,21 @@ class StatusViewController: UITableViewController {
         if targetManager.connection.status == .disconnected ||
             targetManager.connection.status == .invalid {
             do {
+                
+                if let proxySettings = targetManager.protocolConfiguration?.proxySettings {
+                    let httpServer:String = proxySettings.httpServer?.address ?? "---"
+                    let httpServerPort = proxySettings.httpServer?.port ?? 0
+                    let httpsServer:String = proxySettings.httpsServer?.address ?? "---"
+                    let httpsServerPort = proxySettings.httpsServer?.port ?? 0
+                    
+                    os_log("BH_Lin: httpEnabled=\(proxySettings.httpEnabled, privacy: .public)")
+                    os_log("BH_Lin: httpsEnabled=\(proxySettings.httpsEnabled, privacy: .public)")
+                    os_log("BH_Lin: proxySettings.httpServer?.address = \(httpServer, privacy: .public):\(httpServerPort, privacy: .public)")
+                    os_log("BH_Lin: proxySettings.httpsServer?.address = \(httpsServer, privacy: .public):\(httpsServerPort, privacy: .public)")
+                } else {
+                    os_log("BH_Lin: !!! NO proxySettings")
+                }
+
                 os_log("BH_Lin: targetManager.connection.startVPNTunnel()")
                 try targetManager.connection.startVPNTunnel()
             }

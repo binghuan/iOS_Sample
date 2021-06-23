@@ -225,7 +225,10 @@ open class ClientTunnel: Tunnel {
             closeTunnelWithError(connection!.error as NSError?)
             
         case .cancelled:
-            connection!.removeObserver(self, forKeyPath:"state", context:&connection)
+            os_log("BH_Lin: [START] removeObserver")
+            //connection?.removeObserver(self, forKeyPath:"state", context: &connection)
+            connection?.removeObserver(self, forKeyPath:"state")
+            os_log("BH_Lin: [END] removeObserver")
             connection = nil
             delegate?.tunnelDidClose(self)
             
@@ -233,6 +236,7 @@ open class ClientTunnel: Tunnel {
             break
         }
     }
+    
     
     // MARK: Tunnel
     
