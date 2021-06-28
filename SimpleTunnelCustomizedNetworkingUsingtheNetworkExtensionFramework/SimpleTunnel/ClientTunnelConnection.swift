@@ -81,13 +81,16 @@ class ClientTunnelConnection: Connection {
 			])
 
 		clientTunnel.sendMessage(properties) { error in
+            os_log("BH_Lin: clientTunnel.sendMessage\(properties, privacy: .public)")
 			if let sendError = error {
+                os_log("BH_Lin: !!!! clientTunnel.sendError\(sendError.debugDescription, privacy: .public)")
 				self.delegate.tunnelConnectionDidClose(self, error: sendError)
 				return
 			}
 
 			// Read more packets.
 			self.packetFlow.readPackets { inPackets, inProtocols in
+                os_log("BH_Lin: Read more packets.")
 				self.handlePackets(inPackets, protocols: inProtocols)
 			}
 		}
@@ -98,6 +101,7 @@ class ClientTunnelConnection: Connection {
         os_log("BH_Lin: ClientTunnelConnection - startHandlingPackets")
         
 		packetFlow.readPackets { inPackets, inProtocols in
+            os_log("BH_Lin: packetFlow.readPackets")
 			self.handlePackets(inPackets, protocols: inProtocols)
 		}
 	}

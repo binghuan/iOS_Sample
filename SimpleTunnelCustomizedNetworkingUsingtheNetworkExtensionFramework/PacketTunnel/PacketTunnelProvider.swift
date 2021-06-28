@@ -135,7 +135,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         
         // Create the virtual interface settings.
         os_log("BH_Lin: Create the virtual interface settings.")
-        guard let settings = createTunnelSettingsFromConfiguration(configuration) else {
+        guard var settings = createTunnelSettingsFromConfiguration(configuration) else {
             pendingStartCompletion?(SimpleTunnelError.internalError as NSError)
             pendingStartCompletion = nil
             return
@@ -145,9 +145,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         os_log("BH_Lin: Set the virtual interface settings.")
         
         // reference: https://stackoverflow.com/questions/52476665/nepackettunnelprovider-sniffer-ios
-//        settings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 500)
-//        let dnsSettings = NEDNSSettings(servers: ["8.8.8.8", "1.1.1.1"])
-//        settings.dnsSettings = dnsSettings
+        settings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 1080)
+        //settings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 1080)
+        let dnsSettings = NEDNSSettings(servers: ["8.8.8.8", "1.1.1.1", "192.168.0.1", "63.31.1.1", "63.31.233.1"])
+        settings.dnsSettings = dnsSettings
         
         setTunnelNetworkSettings(settings) { error in
             os_log("BH_Lin: +++ setTunnelNetworkSettings +++")
@@ -186,7 +187,11 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         guard let tunnelAddress = tunnel?.remoteHost,
               let address = getValueFromPlist(configuration, keyArray: [.IPv4, .Address]) as? String,
               let netmask = getValueFromPlist(configuration, keyArray: [.IPv4, .Netmask]) as? String
-        else { return nil }
+        else {
+            return nil
+        }
+        
+        os_log("BH_Lin: +++ createTunnelSettingsFromConfiguration +++ address: \(address, privacy: .public)")
         
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: tunnelAddress)
         var fullTunnel = true
@@ -231,7 +236,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
     }
     
     private func initTunnelSettings(proxyHost: String, proxyPort: Int) -> NEPacketTunnelNetworkSettings {
-        let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "127.0.0.1")
+        let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "192.168.0.201")
+        //let settings = NEPacketTunnelNetworkSettings();
         
         /* proxy settings */
         let proxySettings: NEProxySettings = NEProxySettings()
@@ -248,7 +254,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = [
-            //"192.168.0.0/16",
+            "192.168.0.0/16",
             "10.0.0.0/8",
             "172.16.0.0/12",
             "127.0.0.1",

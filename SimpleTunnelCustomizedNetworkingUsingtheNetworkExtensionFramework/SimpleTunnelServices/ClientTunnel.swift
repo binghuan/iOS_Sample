@@ -87,11 +87,10 @@ open class ClientTunnel: Tunnel {
             return nil
         }
         
-        connection = tcpConnection
-        
         // Register for notificationes when the connection status changes.
         os_log("BH_Lin: [START] Register for notificationes when the connection status changes.")
         tcpConnection.addObserver(self, forKeyPath: "state", options: .initial, context: &tcpConnection)
+        connection = tcpConnection
         os_log("BH_Lin: [DONE ] Register for notificationes when the connection status changes.")
         
         return nil
@@ -114,6 +113,7 @@ open class ClientTunnel: Tunnel {
         }
         
         // First, read the total length of the packet.
+        os_log("BH_Lin: First, read the total length of the packet.")
         targetConnection.readMinimumLength(MemoryLayout<UInt32>.size, maximumLength: MemoryLayout<UInt32>.size) { data, error in
             if let readError = error {
                 os_log("BH_Lin: Got an error on the tunnel connection")
@@ -144,6 +144,7 @@ open class ClientTunnel: Tunnel {
             totalLength -= UInt32(MemoryLayout<UInt32>.size)
             
             // Second, read the packet payload.
+            os_log("BH_Lin: Second, read the packet payload.")
             targetConnection.readMinimumLength(Int(totalLength), maximumLength: Int(totalLength)) { data, error in
                 if let payloadReadError = error {
                     os_log("BH_Lin: Got a length that is too big: \(totalLength)")
@@ -161,8 +162,10 @@ open class ClientTunnel: Tunnel {
                     return
                 }
                 
+                os_log("BH_Lin: --> handlePacket")
                 _ = self.handlePacket(payloadData!)
                 
+                os_log("BH_Lin: --> readNextPacket")
                 self.readNextPacket()
             }
         }
@@ -177,11 +180,7 @@ open class ClientTunnel: Tunnel {
             return
         }
         
-        
         os_log("BH_Lin: sendMessage - connection?.write: isEmpty = \(messageData.isEmpty) , data = \(messageData, privacy: .public)")
-        //connection?.write(messageData, completionHandler: completionHandler as! (Error?) -> Void)
-        //connection?.write(messageData, completionHandler: completionHandler())
-        //connection?.write(messageData, completionHandler: )
         connection?.write(messageData, completionHandler: {error -> Void in
             if(error.debugDescription != "nil") {
                 os_log("BH_Lin: NG> sendMessage - connection?.write: \(error.debugDescription, privacy: .public)")

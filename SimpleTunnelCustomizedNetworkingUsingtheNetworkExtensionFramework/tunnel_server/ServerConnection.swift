@@ -43,7 +43,7 @@ class ServerConnection: Connection, StreamDelegate {
     override func closeConnection(_ direction: TunnelConnectionCloseDirection) {
         super.closeConnection(direction)
         
-        print("tunnelDidSendConfiguration")
+        NSLog("tunnelDidSendConfiguration")
         
         if let stream = writeStream, isClosedForWrite && savedData.isEmpty {
             if let error = stream.streamError {
@@ -70,12 +70,14 @@ class ServerConnection: Connection, StreamDelegate {
     
     /// Abort the connection.
     override func abort(_ error: Int = 0) {
+        NSLog("Abort the connection.")
         super.abort(error)
         closeConnection(.all)
     }
     
     /// Stop reading from the connection.
     override func suspend() {
+        NSLog("Stop reading from the connection.")
         if let stream = readStream {
             stream.remove(from: .main, forMode: RunLoop.Mode.default)
         }
@@ -83,6 +85,7 @@ class ServerConnection: Connection, StreamDelegate {
     
     /// Start reading from the connection.
     override func resume() {
+        NSLog("Start reading from the connection.")
         if let stream = readStream {
             stream.schedule(in: .main, forMode: RunLoop.Mode.default)
         }
@@ -90,6 +93,7 @@ class ServerConnection: Connection, StreamDelegate {
     
     /// Send data over the connection.
     override func sendData(_ data: Data) {
+        NSLog("Send data over the connection.")
         guard let stream = writeStream else { return }
         var written = 0
         
@@ -116,6 +120,7 @@ class ServerConnection: Connection, StreamDelegate {
         case writeStream!:
             switch eventCode {
             case [.hasSpaceAvailable]:
+                NSLog("Handle an event on a stream - writeStream:hasSpaceAvailable")
                 if !savedData.isEmpty {
                     guard savedData.writeToStream(writeStream!) else {
                         tunnel?.sendCloseType(.all, forConnection: identifier)
@@ -138,10 +143,12 @@ class ServerConnection: Connection, StreamDelegate {
                 }
                 
             case [.endEncountered]:
+                NSLog("Handle an event on a stream - writeStream:endEncountered")
                 tunnel?.sendCloseType(.read, forConnection: identifier)
                 closeConnection(.write)
                 
             case [.errorOccurred]:
+                NSLog("Handle an event on a stream - writeStream:errorOccurred")
                 tunnel?.sendCloseType(.all, forConnection: identifier)
                 abort()
                 
@@ -152,6 +159,7 @@ class ServerConnection: Connection, StreamDelegate {
         case readStream!:
             switch eventCode {
             case [.hasBytesAvailable]:
+                NSLog("Handle an event on a stream - readStream:hasBytesAvailable")
                 if let stream = readStream {
                     while stream.hasBytesAvailable {
                         var readBuffer = [UInt8](repeating: 0, count: 8192)
@@ -175,10 +183,12 @@ class ServerConnection: Connection, StreamDelegate {
                 }
                 
             case [.endEncountered]:
+                NSLog("Handle an event on a stream - readStream:endEncountered")
                 tunnel?.sendCloseType(.write, forConnection: identifier)
                 closeConnection(.read)
                 
             case [.errorOccurred]:
+                NSLog("Handle an event on a stream - readStream:errorOccurred")
                 if let serverTunnel = tunnel as? ServerTunnel {
                     serverTunnel.sendOpenResultForConnection(connectionIdentifier: identifier, resultCode: .timeout)
                     serverTunnel.sendCloseType(.all, forConnection: identifier)
@@ -186,6 +196,7 @@ class ServerConnection: Connection, StreamDelegate {
                 }
                 
             case [.openCompleted]:
+                NSLog("Handle an event on a stream - readStream:openCompleted")
                 if let serverTunnel = tunnel as? ServerTunnel {
                     serverTunnel.sendOpenResultForConnection(connectionIdentifier: identifier, resultCode: .success)
                 }

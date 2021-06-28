@@ -29,8 +29,13 @@ signal(SIGINT, ignore)
 
 //let portString = Process().arguments![1]
 //let configurationPath = Process().arguments![2]
+
 let portString = CommandLine.arguments[1]
 let configurationPath = CommandLine.arguments[2]
+
+//let portString = "50"
+//let configurationPath = "/Users/BH_Lin/GitHub/iOS_Sample/SimpleTunnelCustomizedNetworkingUsingtheNetworkExtensionFramework/tunnel_server/config.plist"
+
 let networkService: NetService
 
 // Initialize the server.

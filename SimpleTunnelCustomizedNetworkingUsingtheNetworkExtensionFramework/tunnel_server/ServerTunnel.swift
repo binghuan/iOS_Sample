@@ -106,7 +106,10 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
                     var totalLength: UInt32 = 0
                     packetBuffer.getBytes(&totalLength, length: MemoryLayout.size(ofValue: totalLength))
                     
-                    guard totalLength <= UInt32(Tunnel.maximumMessageSize) else { return false }
+                    guard totalLength <= UInt32(Tunnel.maximumMessageSize) else {
+                        NSLog("Tunnel.maximumMessageSize \(totalLength)")
+                        return false
+                    }
                     
                     // Compute the length of the payload.
                     NSLog("Compute the length of the payload.")
@@ -325,7 +328,6 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     /// Handle the "tunnel open" event.
     func tunnelDidOpen(_ targetTunnel: Tunnel) {
         NSLog(">> tunnelDidOpen")
-        
     }
     
     /// Handle the "tunnel closed" event.
