@@ -145,7 +145,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         os_log("BH_Lin: Set the virtual interface settings.")
         
         // reference: https://stackoverflow.com/questions/52476665/nepackettunnelprovider-sniffer-ios
-        settings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 1080)
+        settings = initTunnelSettings(proxyHost: "127.0.0.1", proxyPort: 10911)
         //settings = initTunnelSettings(proxyHost: "192.168.0.18", proxyPort: 1080)
         let dnsSettings = NEDNSSettings(servers: ["8.8.8.8", "1.1.1.1", "192.168.0.1", "63.31.1.1", "63.31.233.1"])
         settings.dnsSettings = dnsSettings
@@ -263,18 +263,20 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
         ]
         settings.proxySettings = proxySettings
         
+        // 20210716@BH_Lin ---------------------------------------------------->
+        // Purpose: No need to setup ipv4 settings for v2ray proxy
         /* ipv4 settings */
-        let ipv4Settings: NEIPv4Settings = NEIPv4Settings(
-            addresses: [settings.tunnelRemoteAddress],
-            subnetMasks: ["255.255.255.255"]
-        )
-        ipv4Settings.includedRoutes = [NEIPv4Route.default()]
-        ipv4Settings.excludedRoutes = [
-            NEIPv4Route(destinationAddress: "192.168.0.0", subnetMask: "255.255.0.0"),
-            NEIPv4Route(destinationAddress: "10.0.0.0", subnetMask: "255.0.0.0"),
-            NEIPv4Route(destinationAddress: "172.16.0.0", subnetMask: "255.240.0.0")
-        ]
-        settings.ipv4Settings = ipv4Settings
+//        let ipv4Settings: NEIPv4Settings = NEIPv4Settings(
+//            addresses: [settings.tunnelRemoteAddress],
+//            subnetMasks: ["255.255.255.255"]
+//        )
+//        ipv4Settings.includedRoutes = [NEIPv4Route.default()]
+//        ipv4Settings.excludedRoutes = [
+//            NEIPv4Route(destinationAddress: "192.168.0.0", subnetMask: "255.255.0.0"),
+//            NEIPv4Route(destinationAddress: "10.0.0.0", subnetMask: "255.0.0.0"),
+//            NEIPv4Route(destinationAddress: "172.16.0.0", subnetMask: "255.240.0.0")
+//        ]
+//        settings.ipv4Settings = ipv4Settings
         
         /* MTU */
         settings.mtu = 1500

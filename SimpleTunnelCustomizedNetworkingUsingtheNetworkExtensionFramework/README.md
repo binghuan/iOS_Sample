@@ -60,3 +60,5 @@ Copyright (C) 2016 Apple Inc. All rights reserved.
 
 source: https://developer.apple.com/library/archive/samplecode/SimpleTunnel/Introduction/Intro.html#//apple_ref/doc/uid/TP40016140
 https://github.com/binghuan/iOS_Sample/tree/master/SimpleTunnelCustomizedNetworkingUsingtheNetworkExtensionFramework
+
+![](./Pictures/the_call_stack_for_app_proxy_by_using_tunnel_provider.png)

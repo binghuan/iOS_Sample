@@ -43,6 +43,7 @@ class StatusViewController: UITableViewController {
     
     /// The target VPN configuration.
     var targetManager = NEVPNManager.shared()
+    //var targetManager = NEAppProxyProviderManager.shared()
     
     // MARK: UIViewController
     
@@ -124,18 +125,6 @@ class StatusViewController: UITableViewController {
         os_log("BH_Lin: startStopToggled - Handle the user toggling the \"VPN\" switch.")
         if targetManager.connection.status == .disconnected ||
             targetManager.connection.status == .invalid {
-            
-//            NEAppProxyProviderManager.loadAllFromPreferences { newManagers, error in
-//                /* Extract the manager from managers as your NEAppProxyProviderManager */
-//                do {
-//                    os_log("BH_Lin: targetManager.connection.startVPNTunnel()")
-//                    try self.targetManager.connection.startVPNTunnel()
-//                } catch {
-//                    os_log("BH_Lin: Failed to start the VPN: \(error.localizedDescription, privacy: .public)")
-//                }
-//            }
-//            
-//            return
             
             do {
                 
