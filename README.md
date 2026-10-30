@@ -1,5 +1,11 @@
 # iOS Sample Projects
 
+## Feature overview
+
+![iOS_Sample — feature flow diagram](README-assets/project-preview.svg)
+
+Conceptual feature flow based on this repository; this is a documentation diagram, not an application screenshot.
+
 A collection of iOS sample applications demonstrating various iOS SDK features and extension points. This repository contains four main projects showcasing different aspects of iOS development including Action Extensions, Photo Editing Extensions, Unit Conversion, and Network Extensions.
 
 ## Projects Overview
